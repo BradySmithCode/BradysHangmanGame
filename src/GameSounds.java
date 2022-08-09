@@ -22,7 +22,48 @@ public class GameSounds {
         }
     }
 
-    public static void main(String[] args) {
-        backgroundMusic();
+    public static void clickSound() {
+        try {
+
+            File background = new File("src/Music/select.wav");
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(background);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+
+            clip.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loseSound() {
+        try {
+
+            File background = new File("src/Music/death.wav");
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(background);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+
+            clip.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void winSound() {
+        try {
+
+            File background = new File("src/Music/win.wav");
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(background);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+
+            clip.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

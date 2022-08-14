@@ -30,6 +30,7 @@ public class Game {
 
         //If user says yes, start game sequence
         while (play) {
+            int lives = 3;
             int difficulty = 0;
             while (difficulty == 0) {
                 Scanner difficultyInput = new Scanner(System.in);
@@ -83,7 +84,21 @@ public class Game {
 
 
             }
-            System.out.println(word);
+            String wordGuessLayout = "";
+            for (int i = 0; i < word.length(); i++) {
+                wordGuessLayout += " _";
+
+
+            }
+            while (lives != 0) {
+                System.out.println("Lives left: " + lives);
+                System.out.println(LivesDrawer.livesOutput(lives));
+                System.out.println(wordGuessLayout);
+
+                Scanner guessInput = new Scanner(System.in);
+                String guess = guessInput.nextLine();
+                GameSounds.clickSound();
+            }
             if(WordPicker.pickWord(3, wordsUsed).equals("noWords") & WordPicker.pickWord(2, wordsUsed).equals("noWords") & WordPicker.pickWord(1, wordsUsed).equals("noWords")) {
                 System.out.println("No words left, please restart game.");
                 System.exit(1);

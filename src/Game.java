@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,7 +24,7 @@ public class Game {
 
             word = gameStartInterface(difficulty, word, wordsUsed);
 
-            HashMap<Character, Boolean> wordGuessLayout = guessingLayout(word);
+            ArrayList<Character> wordGuessLayout = guessingLayout(word);
 
             playingGame(lives, lettersUsed, wordGuessLayout, word, wordsUsed, allWords);
 
@@ -91,16 +88,18 @@ public class Game {
 
     }
 
-    public static HashMap<Character, Boolean> guessingLayout(String word) {
-        HashMap<Character, Boolean> wordGuessLayout = new HashMap<>();
+    public static ArrayList<Character> guessingLayout(String word) {
+        ArrayList<Character> wordGuessLayout = new ArrayList<>();
         for (int i = 0; i < word.length(); i++) {
-            wordGuessLayout.put(word.charAt(i), false);
+            wordGuessLayout.add(word.charAt(i));
         }
 
         return wordGuessLayout;
     }
 
-    public static void playingGame(int lives, ArrayList<String> lettersUsed, HashMap<Character, Boolean> wordGuessLayout, String word, ArrayList<String> wordsUsed, int allWords) {
+    public static void playingGame(int lives, ArrayList<String> lettersUsed, ArrayList<Character> wordGuessLayout, String word, ArrayList<String> wordsUsed, int allWords) {
+        ArrayList<Character> unknownLetters = (ArrayList<Character>) wordGuessLayout.clone();
+        Collections.fill(unknownLetters, '_');
         while (lives != 0) {
             boolean wordCheck = false;
             boolean guessedWord = false;
@@ -109,16 +108,12 @@ public class Game {
             System.out.println("Lives left: " + lives);
             System.out.println(LivesDrawer.livesOutput(lives));
 
+
             System.out.println(lettersUsed);
 
             for (int i = 0; i < wordGuessLayout.size(); i++) {
-                char letter = word.charAt(i);
-                if (wordGuessLayout.get(letter) == false) {
-                    letterLayout += "_";
+                letterLayout += unknownLetters.get(i);
 
-                } else {
-                    letterLayout += letter;
-                }
             }
             System.out.println(letterLayout);
 
@@ -139,17 +134,32 @@ public class Game {
                     if (!matchIsLetter.find()) {
 
                         System.out.println("Please enter valid input");
+                        System.out.println("-------------------------");
+                        System.out.println("Lives left: " + lives);
+                        System.out.println(LivesDrawer.livesOutput(lives));
+                        System.out.println(letterLayout);
                     }
                     else if (lettersUsed.contains(guess.toLowerCase())) {
                         System.out.println("Letter already used try again");
+                        System.out.println("-------------------------");
+                        System.out.println("Lives left: " + lives);
+                        System.out.println(LivesDrawer.livesOutput(lives));
+                        System.out.println(letterLayout);
+
                     } else if (guess.length() > 1 | guess.length() == 0) {
                         System.out.println("Please enter 1 letter");
+                        System.out.println("-------------------------");
+                        System.out.println("Lives left: " + lives);
+                        System.out.println(LivesDrawer.livesOutput(lives));
+                        System.out.println(letterLayout);
+
                     } else {
                         for (int j = 0; j < wordGuessLayout.size(); j++) {
                             Character letter = word.charAt(j);
 
-                            if (guess.equalsIgnoreCase(letter.toString()) & wordGuessLayout.get(letter) == false) {
-                                wordGuessLayout.replace(letter, false, true);
+                            if (guess.equalsIgnoreCase(letter.toString())) {
+                                unknownLetters.set(j, letter);
+                                System.out.println("Added");
                                 wordCheck = true;
                                 allWords += 1;
                             }
@@ -171,7 +181,16 @@ public class Game {
                     GameSounds.clickSound();
                     System.out.println("Guess Word");
                     String wordGuess = guessInput.nextLine();
+                    Matcher matchIsLetter = isLetter.matcher(wordGuess);
+
                     GameSounds.clickSound();
+                    if (!matchIsLetter.find()) {
+                        System.out.println("Please enter a word without numbers");
+                        System.out.println("-------------------------");
+                        System.out.println("Lives left: " + lives);
+                        System.out.println(LivesDrawer.livesOutput(lives));
+                        System.out.println(letterLayout);
+                    }
                     if (wordGuess.equalsIgnoreCase(word)) {
                         guessedWord = true;
                         GameSounds.winSound();
@@ -190,6 +209,10 @@ public class Game {
                 } else {
                     GameSounds.clickSound();
                     System.out.println("Invalid input please try again");
+                    System.out.println("-------------------------");
+                    System.out.println("Lives left: " + lives);
+                    System.out.println(LivesDrawer.livesOutput(lives));
+                    System.out.println(letterLayout);
                 }
 
             }
@@ -204,6 +227,7 @@ public class Game {
             System.out.println("-------------------------");
             System.out.println(LivesDrawer.livesOutput(lives));
             System.out.println("YOU LOST");
+            System.out.println("Word was: " + word);
         } else {
             System.out.println();
             System.out.println("You won!");

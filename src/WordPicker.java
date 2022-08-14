@@ -6,13 +6,17 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class WordPicker {
-    public static String pickWord() {
+    public static String pickWord(int difficulty, ArrayList<String> wordsUsed) {
         // Initialize ArrayList for words
-        ArrayList<String> words = new ArrayList<String>();
+        ArrayList<String> wordsEasy = new ArrayList<String>();
+        ArrayList<String> wordsMedium = new ArrayList<String>();
+        ArrayList<String> wordsHard = new ArrayList<String>();
 
         //Initialize random object to get random index number
         Random randomObject = new Random();
-        int randomNumber = 0;
+        int randomNumberEasy = 0;
+        int randomNumberMedium = 0;
+        int randomNumberHard = 0;
 
 
         // Grab information from the file and add them to the words list
@@ -21,11 +25,24 @@ public class WordPicker {
             Scanner reader = new Scanner(wordFile);
             while (reader.hasNextLine()) {
                 String word = reader.nextLine();
-                words.add(word);
+                if (!wordsUsed.contains(word)) {
+                    if (word.length() <= 3) {
+                        wordsEasy.add(word);
+                    } else if (word.length() > 3 & word.length() < 6) {
+                        wordsMedium.add(word);
+                    } else {
+                        wordsHard.add(word);
+                    }
+                } else {
+                    return "noWords";
+                }
+
             }
 
             //Get random number for index
-            randomNumber = randomObject.nextInt(words.size());
+            randomNumberEasy = randomObject.nextInt(wordsEasy.size());
+            randomNumberMedium = randomObject.nextInt(wordsMedium.size());
+            randomNumberHard = randomObject.nextInt(wordsHard.size());
 
 
         } catch (Exception e) {
@@ -33,7 +50,13 @@ public class WordPicker {
         }
 
         // Return random word
-        return words.get(randomNumber);
+        if (difficulty == 1) {
+            return wordsEasy.get(randomNumberEasy);
+        } else if (difficulty == 2) {
+            return wordsMedium.get(randomNumberMedium);
+        } else {
+            return wordsHard.get(randomNumberHard);
+        }
     }
 
 }

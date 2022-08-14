@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class GameSounds {
     public static void backgroundMusic() {
         try {
-            Scanner scanner = new Scanner(System.in);
 
             File background = new File("src/Music/background.wav");
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(background);
@@ -16,7 +15,6 @@ public class GameSounds {
 
             clip.start();
 
-            String response = scanner.nextLine();
         } catch (Exception e) {
             e.printStackTrace();
         }

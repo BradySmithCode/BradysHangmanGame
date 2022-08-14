@@ -12,6 +12,8 @@ public class WordPicker {
         ArrayList<String> wordsMedium = new ArrayList<String>();
         ArrayList<String> wordsHard = new ArrayList<String>();
 
+        boolean noWords = false;
+
         //Initialize random object to get random index number
         Random randomObject = new Random();
         int randomNumberEasy = 0;
@@ -24,6 +26,7 @@ public class WordPicker {
             File wordFile = new File("src/wordbank.txt");
             Scanner reader = new Scanner(wordFile);
             while (reader.hasNextLine()) {
+
                 String word = reader.nextLine();
                 if (!wordsUsed.contains(word)) {
                     if (word.length() <= 3) {
@@ -33,17 +36,21 @@ public class WordPicker {
                     } else {
                         wordsHard.add(word);
                     }
-                } else {
-                    return "noWords";
                 }
 
             }
 
             //Get random number for index
-            randomNumberEasy = randomObject.nextInt(wordsEasy.size());
-            randomNumberMedium = randomObject.nextInt(wordsMedium.size());
-            randomNumberHard = randomObject.nextInt(wordsHard.size());
 
+            if (wordsEasy.size() != 0) {
+                randomNumberEasy = randomObject.nextInt(wordsEasy.size());
+            }
+            if (wordsMedium.size() != 0) {
+                randomNumberMedium = randomObject.nextInt(wordsMedium.size());
+            }
+            if (wordsHard.size() != 0) {
+                randomNumberHard = randomObject.nextInt(wordsHard.size());
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,11 +58,23 @@ public class WordPicker {
 
         // Return random word
         if (difficulty == 1) {
-            return wordsEasy.get(randomNumberEasy);
+            if (wordsEasy.size() == 0) {
+                return "noWords";
+            } else {
+                return wordsEasy.get(randomNumberEasy);
+            }
         } else if (difficulty == 2) {
-            return wordsMedium.get(randomNumberMedium);
+            if (wordsMedium.size() == 0) {
+                return "noWords";
+            } else {
+                return wordsMedium.get(randomNumberMedium);
+            }
         } else {
-            return wordsHard.get(randomNumberHard);
+            if (wordsHard.size() == 0) {
+                return "noWords";
+            } else {
+                return wordsHard.get(randomNumberHard);
+            }
         }
     }
 

@@ -8,11 +8,9 @@ import java.util.Random;
 public class WordPicker {
     public static String pickWord(int difficulty, ArrayList<String> wordsUsed) {
         // Initialize ArrayList for words
-        ArrayList<String> wordsEasy = new ArrayList<String>();
-        ArrayList<String> wordsMedium = new ArrayList<String>();
-        ArrayList<String> wordsHard = new ArrayList<String>();
-
-        boolean noWords = false;
+        ArrayList<String> wordsEasy = new ArrayList<>();
+        ArrayList<String> wordsMedium = new ArrayList<>();
+        ArrayList<String> wordsHard = new ArrayList<>();
 
         //Initialize random object to get random index number
         Random randomObject = new Random();

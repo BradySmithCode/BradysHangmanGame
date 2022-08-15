@@ -24,7 +24,7 @@ public class GameSounds {
             clip = getAudioStream.getClip();
             clip.open(audioStream);
 
-            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
 
         } catch (Exception e) {
             e.printStackTrace();
